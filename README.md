@@ -14,7 +14,7 @@ Envoi de mails de prospection **au compte-gouttes** : quelques-uns par jour, à 
 | 3. Planification | tirage des heures, plage, fériés, montée progressive, `slowmail:status` | fait |
 | 4. Envoi | `slowmail:tick`, `uncertain`, disjoncteur, suppression, `dry_run` | fait |
 | 5. Interface | écrans complets, bandeau d'état, export CSV, liste de suppression | fait |
-| 6. Distribution | licence AGPL, site et tutoriel Docker, image publique, `slowmail:backup` | fait ; **publication à faire** (voir « Site et image publique ») |
+| 6. Distribution | licence AGPL, site et tutoriel Docker, image publique, `slowmail:backup` | fait ; site publié, **image à publier** (étiquette `v1.0.0`, voir « Site et image publique ») |
 
 **Rien ne part tant que vous ne le décidez pas** : `SLOWMAIL_ENABLED` vaut `false` par défaut (kill switch), et une campagne ne part que si vous l'activez. La marche à suivre prudente, de la simulation aux trois premières adresses réelles, est décrite dans [« Premiers envois »](#premiers-envois-pas-à-pas) ; les écrans, dans [« Interface »](#interface).
 
