@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dépannage SlowMail et Docker</title>
+  <meta name="description" content="Les problèmes les plus fréquents à l'installation et à l'usage de SlowMail (Docker, port occupé, mot de passe, SMTP, rien ne part) et comment les résoudre.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m4 7.5 8 6.2 8-6.2"/></svg></span>
+        SlowMail
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="tutoriel.html">Installer</a>
+        <a href="premiers-envois.html">Premiers envois</a>
+        <a href="bon-usage.html">Bon usage</a>
+        <a href="depannage.html" aria-current="page">Dépannage</a>
+        <a href="https://github.com/__REPO__">Code source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Dépannage</h1>
+        <p class="lead">Les problèmes qu'on rencontre le plus souvent, du plus proche de Docker au plus proche de vos envois. Cliquez sur celui qui ressemble au vôtre.</p>
+      </div>
+
+      <div class="layout">
+        <nav class="toc" aria-label="Sur cette page">
+          <strong>Sur cette page</strong>
+          <ol>
+            <li><a href="#docker">Docker</a></li>
+            <li><a href="#demarrage">Démarrage</a></li>
+            <li><a href="#connexion">Connexion</a></li>
+            <li><a href="#envoi">Envoi</a></li>
+            <li><a href="#donnees">Données</a></li>
+            <li><a href="#aide">Demander de l'aide</a></li>
+          </ol>
+        </nav>
+
+        <article class="article prose">
+
+          <h2 id="docker">Docker</h2>
+
+          <details id="docker-absent">
+            <summary>« command not found » ou « Cannot connect to the Docker daemon »</summary>
+            <p>Docker n'est pas installé, ou il n'est pas lancé.</p>
+            <ul>
+              <li><strong>Mac et Windows</strong> : ouvrez l'application Docker Desktop (ou OrbStack) et attendez que l'icône de la baleine cesse de bouger. Puis recommencez la commande.</li>
+              <li><strong>Linux</strong> : <code>sudo systemctl start docker</code>. Si vous lisez « permission denied », ajoutez-vous au groupe docker avec <code>sudo usermod -aG docker $USER</code>, puis fermez et rouvrez votre session.</li>
+            </ul>
+          </details>
+
+          <details id="windows-virtualisation">
+            <summary>Windows : « la virtualisation est désactivée » ou une erreur WSL</summary>
+            <p>Docker Desktop a besoin de la virtualisation et de WSL 2.</p>
+            <ol>
+              <li>Ouvrez le Gestionnaire des tâches (<kbd>Ctrl</kbd> + <kbd>Maj</kbd> + <kbd>Échap</kbd>), onglet Performances, puis Processeur : la ligne « Virtualisation » doit indiquer « Activé ».</li>
+              <li>Si elle est désactivée, activez-la dans le BIOS/UEFI de l'ordinateur (option nommée « Intel Virtualization Technology », « VT-x », « SVM » ou « AMD-V » selon la marque). La manipulation varie d'un modèle à l'autre : cherchez « activer la virtualisation » avec la marque de votre ordinateur.</li>
+              <li>Installez WSL : ouvrez PowerShell en administrateur et tapez <code>wsl --install</code>, puis redémarrez.</li>
+            </ol>
+          </details>
+
+          <details id="yaml">
+            <summary>Une erreur « yaml: … » ou « mapping values are not allowed »</summary>
+            <p>Le fichier <code>docker-compose.yml</code> a été abîmé en le modifiant. Les causes habituelles : un guillemet effacé, un décalage des espaces en début de ligne, des tabulations à la place d'espaces, ou un éditeur qui a enregistré en texte enrichi (TextEdit sur Mac : Format, puis « Convertir au format texte »).</p>
+            <p>Le plus sûr : <a href="telecharger/docker-compose.yml" download>retéléchargez le fichier</a> et remplissez-le de nouveau, en ne changeant que ce qui est entre les guillemets.</p>
+          </details>
+
+          <h2 id="demarrage">Démarrage</h2>
+
+          <details id="port">
+            <summary>« port is already allocated » ou « address already in use »</summary>
+            <p>Un autre programme utilise déjà le port 8080 de votre ordinateur. Dans <code>docker-compose.yml</code>, changez le <strong>premier</strong> nombre de la ligne des ports :</p>
+            <div class="code"><pre><code>      - "127.0.0.1:<span class="hl">8081</span>:8000"</code></pre></div>
+            <p>Puis <code>docker compose up -d</code>, et ouvrez <code>http://localhost:8081</code>. Gardez <code>127.0.0.1</code> et le <code>8000</code> final tels quels.</p>
+          </details>
+
+          <details id="pas-healthy">
+            <summary>Le statut n'affiche jamais « healthy »</summary>
+            <p>Comptez jusqu'à deux minutes la première fois. Au-delà, regardez ce que SlowMail dit :</p>
+            <div class="code" data-copy><pre><code>docker compose logs --tail 80</code></pre></div>
+            <p>Les causes les plus fréquentes : un fichier <code>docker-compose.yml</code> abîmé (voir ci-dessus), un port déjà utilisé, ou un disque plein. Si l'état est <code>unhealthy</code> alors que l'interface s'ouvre, le planificateur n'a pas encore battu : patientez et rechargez.</p>
+          </details>
+
+          <details id="pull">
+            <summary>« pull access denied », « unauthorized » ou « manifest unknown »</summary>
+            <p>Docker n'arrive pas à télécharger l'image de SlowMail. Vérifiez que vous êtes connecté à Internet et que la ligne <code>image:</code> du fichier n'a pas été modifiée (retéléchargez le fichier si besoin). Si l'erreur persiste, <a href="https://github.com/__REPO__/issues">signalez-la</a> avec le message complet : il se peut que l'image ne soit pas accessible publiquement.</p>
+          </details>
+
+          <h2 id="connexion">Connexion</h2>
+
+          <details id="mdp">
+            <summary>« SLOWMAIL_PASSWORD n'est pas défini » ou mot de passe refusé</summary>
+            <ul>
+              <li>Après toute modification de <code>docker-compose.yml</code>, il faut relancer <code>docker compose up -d</code> : sans cela, SlowMail garde les anciennes valeurs.</li>
+              <li>Le mot de passe doit être entre guillemets, sans espace en trop. Un <code>$</code> s'écrit <code>$$</code>.</li>
+              <li>Après cinq essais ratés, la page vous fait attendre une minute.</li>
+              <li>Mot de passe oublié : il est dans votre fichier <code>docker-compose.yml</code>. Vous pouvez le changer, puis relancer <code>docker compose up -d</code>.</li>
+            </ul>
+          </details>
+
+          <details id="bandeau-rouge">
+            <summary>Le bandeau du haut est rouge : « dernier passage du scheduler » ancien</summary>
+            <p>Le planificateur n'a pas tourné depuis plus de 10 minutes : l'ordinateur était en veille, ou Docker arrêté. Ouvrez Docker, vérifiez avec <code>docker compose ps</code>, et attendez une minute. Rien n'est rattrapé en rafale : les créneaux manqués sont replanifiés dans votre plage d'envoi.</p>
+          </details>
+
+          <h2 id="envoi">Envoi</h2>
+
+          <details id="aucun-envoi">
+            <summary>Rien ne part</summary>
+            <p>Passez cette liste dans l'ordre :</p>
+            <ol>
+              <li>L'interrupteur général est-il à <code>"true"</code> dans <code>docker-compose.yml</code>, et avez-vous relancé <code>docker compose up -d</code> ? Sinon le bandeau affiche « Envois désactivés ».</li>
+              <li>La campagne est-elle <strong>Active</strong> (et non en brouillon ou en pause) ?</li>
+              <li>Le <strong>mode simulation</strong> est-il décoché ? En simulation, rien ne part, c'est fait pour ça.</li>
+              <li>Sommes-nous dans la plage horaire, un jour autorisé, qui n'est pas un jour férié ? Le bandeau indique le « prochain envoi prévu ».</li>
+              <li>Le quota du jour est-il déjà atteint ? Les envois, simulés ou réels, comptent.</li>
+              <li>Une pause « Disjoncteur » ? Voir plus bas.</li>
+            </ol>
+          </details>
+
+          <details id="test-refuse">
+            <summary>« M'envoyer un test » est refusé</summary>
+            <p>La raison est affichée. Les cas fréquents : l'interrupteur général est encore à <code>"false"</code> ; <code>MAIL_FROM_ADDRESS</code> est vide ; le modèle contient une variable inconnue ; la ligne choisie ne partirait pas (une variable vide sans valeur de secours).</p>
+          </details>
+
+          <details id="smtp-erreur">
+            <summary>Une erreur SMTP s'affiche (identifiants, connexion, expéditeur refusé)</summary>
+            <ul>
+              <li><strong>« 535 », « authentication failed », « Authentication credentials invalid »</strong> : <code>MAIL_USERNAME</code> ou <code>MAIL_PASSWORD</code> est faux. Vérifiez en vous connectant à votre messagerie en ligne avec les mêmes valeurs. Pensez au <code>$</code> à doubler.</li>
+              <li><strong>« Connection could not be established », « timed out »</strong> : <code>MAIL_HOST</code> ou <code>MAIL_PORT</code> est faux, ou votre réseau bloque l'envoi (certains réseaux d'entreprise ou publics). Essayez sur un autre réseau.</li>
+              <li><strong>« 553 », « sender address rejected », « not owned by user »</strong> : l'adresse de <code>MAIL_FROM_ADDRESS</code> n'est pas autorisée avec cette boîte. Utilisez l'adresse de la boîte elle-même.</li>
+              <li><strong>Port et sécurité</strong> : le port 465 va avec <code>MAIL_SCHEME: "smtps"</code>, le port 587 avec <code>"smtp"</code>.</li>
+            </ul>
+            <p>SlowMail n'affiche jamais votre mot de passe dans ces messages.</p>
+          </details>
+
+          <details id="disjoncteur">
+            <summary>La campagne est en pause avec la raison « Disjoncteur »</summary>
+            <p>Trois échecs d'envoi de suite : SlowMail s'arrête plutôt que d'insister. La raison est affichée en haut de la campagne et dans l'onglet Journal. Corrigez la cause (le plus souvent les identifiants), puis cliquez sur <strong>Reprendre</strong>.</p>
+          </details>
+
+          <details id="spam">
+            <summary>Mes mails arrivent dans les indésirables</summary>
+            <p>Cela dépend surtout de votre domaine et de votre réputation, pas de SlowMail. Voir la page <a href="bon-usage.html#delivrabilite">Bon usage</a> : authentification du domaine (SPF, DKIM, DMARC), volumes faibles, texte sobre.</p>
+          </details>
+
+          <h2 id="donnees">Données</h2>
+
+          <details id="perdu">
+            <summary>Mes campagnes ont disparu</summary>
+            <p>Elles sont dans le volume Docker <code>slowmail_slowmail-data</code>. Vérifiez qu'il existe avec <code>docker volume ls</code>. Les commandes qui le détruisent sont <code>docker compose down -v</code> et la suppression du volume dans Docker Desktop : ne les utilisez pas sans sauvegarde. Redémarrer, mettre à jour ou déplacer le dossier <code>slowmail</code> ne les efface pas.</p>
+          </details>
+
+          <details id="restaurer">
+            <summary>Restaurer une sauvegarde</summary>
+            <p>À faire seulement si vous avez perdu ou abîmé vos données. <strong>La restauration remplace tout le contenu actuel de SlowMail</strong> par celui de la sauvegarde : ce qui a été fait depuis est perdu.</p>
+            <p>Dans le dossier <code>slowmail</code>, avec le fichier de sauvegarde choisi dans le dossier <code>sauvegardes</code> (remplacez <code>slowmail-AAAAMMJJ-HHMMSS.sqlite</code> par son nom) :</p>
+            <div class="code" data-copy><pre><code>docker compose stop
+docker compose cp sauvegardes/slowmail-AAAAMMJJ-HHMMSS.sqlite slowmail:/data/restauration.sqlite
+docker compose run --rm --no-deps --user root --entrypoint sh slowmail -c "rm -f /data/database.sqlite-wal /data/database.sqlite-shm &amp;&amp; mv /data/restauration.sqlite /data/database.sqlite &amp;&amp; chown www-data:www-data /data/database.sqlite &amp;&amp; chmod 600 /data/database.sqlite"
+docker compose start</code></pre></div>
+            <p>Au redémarrage, le journal d'une campagne active peut signaler une « interruption détectée » : c'est normal (le planificateur n'a pas tourné entre la sauvegarde et maintenant), et rien n'est rattrapé en rafale.</p>
+          </details>
+
+          <details id="changer">
+            <summary>Je veux changer mon mot de passe ou mes réglages de messagerie</summary>
+            <p>Modifiez <code>docker-compose.yml</code>, enregistrez, puis <code>docker compose up -d</code>. Vos campagnes ne sont pas touchées.</p>
+          </details>
+
+          <h2 id="aide">Demander de l'aide</h2>
+          <p>Si rien de tout cela ne règle votre problème, <a href="https://github.com/__REPO__/issues">ouvrez un ticket</a> en indiquant votre système, ce que vous avez fait et le message d'erreur exact. Vous pouvez joindre la sortie de ces deux commandes :</p>
+          <div class="code" data-copy><pre><code>docker compose ps
+docker compose logs --tail 80</code></pre></div>
+          <div class="warn">
+            <strong>Avant de poster quoi que ce soit</strong>
+            <p>Relisez le texte et effacez tout mot de passe, et ne joignez jamais votre fichier <code>docker-compose.yml</code> tel quel : il contient vos identifiants.</p>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p><strong>SlowMail</strong> est un logiciel libre sous licence AGPL-3.0-or-later.</p>
+        <p>Fourni tel quel, sans garantie.</p>
+      </div>
+      <ul>
+        <li><a href="https://github.com/__REPO__">Code source</a></li>
+        <li><a href="https://github.com/__REPO__/blob/main/LICENSE">Licence</a></li>
+        <li><a href="https://github.com/__REPO__/issues">Signaler un problème</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="tutoriel.html">Tutoriel</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

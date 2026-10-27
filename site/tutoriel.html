@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installer SlowMail avec Docker, pas à pas</title>
+  <meta name="description" content="Installer SlowMail sur Mac, Windows ou Linux, même sans connaître Docker : installer Docker, remplir un fichier, démarrer, se connecter.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m4 7.5 8 6.2 8-6.2"/></svg></span>
+        SlowMail
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="tutoriel.html" aria-current="page">Installer</a>
+        <a href="premiers-envois.html">Premiers envois</a>
+        <a href="bon-usage.html">Bon usage</a>
+        <a href="depannage.html">Dépannage</a>
+        <a href="https://github.com/__REPO__">Code source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Installer SlowMail avec Docker, pas à pas</h1>
+        <p class="lead">Une vingtaine de minutes, sans rien connaître à Docker. À la fin, SlowMail tourne sur votre ordinateur et s'ouvre dans votre navigateur.</p>
+      </div>
+
+      <div class="layout">
+        <nav class="toc" aria-label="Sur cette page">
+          <strong>Sur cette page</strong>
+          <ol>
+            <li><a href="#avant">Avant de commencer</a></li>
+            <li><a href="#docker">1. Installer Docker</a></li>
+            <li><a href="#dossier">2. Préparer le fichier</a></li>
+            <li><a href="#remplir">3. Le remplir</a></li>
+            <li><a href="#demarrer">4. Démarrer</a></li>
+            <li><a href="#ouvrir">5. Ouvrir SlowMail</a></li>
+            <li><a href="#quotidien">Au quotidien</a></li>
+            <li><a href="#suite">Et ensuite ?</a></li>
+          </ol>
+        </nav>
+
+        <article class="article prose">
+
+          <h2 id="avant">Avant de commencer</h2>
+
+          <p><strong>Docker</strong> est un logiciel gratuit qui fait tourner une application dans une « boîte » fermée, avec tout ce dont elle a besoin. Pour SlowMail, cela veut dire : vous n'installez ni PHP, ni base de données, ni rien d'autre. Vous installez Docker une fois, puis vous lancez SlowMail avec une commande.</p>
+
+          <p>Il vous faut :</p>
+          <ul>
+            <li>un ordinateur <strong>Mac, Windows (10 ou 11) ou Linux</strong>, que vous laisserez allumé aux heures d'envoi ;</li>
+            <li>une <strong>boîte mail professionnelle avec accès SMTP</strong> (le serveur qui envoie vos mails). SlowMail a été éprouvé avec OVH ; l'étape 3 dit où trouver les réglages chez un autre hébergeur ;</li>
+            <li>environ 20 minutes.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Une règle d'or pour tout le tutoriel</strong>
+            <p>Rien ne part tant que vous ne l'avez pas décidé. SlowMail démarre avec les envois <em>coupés</em>, et vous ferez vos premiers essais sur vos propres adresses, pas sur de vrais contacts. Vous ne pouvez pas envoyer par erreur en suivant ces étapes.</p>
+          </div>
+
+          <p>Choisissez votre système : les commandes et les captures s'adaptent.</p>
+          <div class="os-picker" data-os-picker role="group" aria-label="Votre système"></div>
+
+          <h2 id="docker"><span class="step-title"><span class="n">1</span>Installer Docker</span></h2>
+
+          <div class="os-block" data-os="mac">
+            <p class="os-title">Sur Mac</p>
+            <ol>
+              <li>Ouvrez <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a> et téléchargez Docker Desktop. Choisissez la version qui correspond à votre Mac : <em>Apple Silicon</em> (puces M1, M2, M3…) ou <em>Intel</em>. En cas de doute : menu Pomme, puis « À propos de ce Mac », la ligne « Puce » ou « Processeur » l'indique.</li>
+              <li>Ouvrez le fichier téléchargé (<code>.dmg</code>) et glissez Docker dans le dossier Applications.</li>
+              <li>Lancez Docker depuis Applications, acceptez les conditions, puis attendez que l'icône de la baleine, dans la barre de menus en haut de l'écran, cesse de bouger.</li>
+            </ol>
+            <p>Alternative plus légère : <a href="https://orbstack.dev/">OrbStack</a>, qui fonctionne exactement de la même façon pour la suite. Vérifiez les conditions d'utilisation de l'outil que vous choisissez : leur gratuité dépend de l'usage.</p>
+          </div>
+
+          <div class="os-block" data-os="windows">
+            <p class="os-title">Sur Windows</p>
+            <ol>
+              <li>Ouvrez <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a> et téléchargez Docker Desktop pour Windows.</li>
+              <li>Lancez l'installateur. Laissez cochée l'option qui utilise <strong>WSL 2</strong> : c'est ce qui permet à Docker de fonctionner sous Windows. L'installation peut demander de redémarrer l'ordinateur.</li>
+              <li>Lancez Docker Desktop depuis le menu Démarrer, acceptez les conditions, puis attendez que l'icône de la baleine, dans la zone de notification en bas à droite, cesse de bouger.</li>
+            </ol>
+            <p>Si Windows indique que la virtualisation est désactivée, voir la page <a href="depannage.html#windows-virtualisation">Dépannage</a>.</p>
+          </div>
+
+          <div class="os-block" data-os="linux">
+            <p class="os-title">Sur Linux</p>
+            <p>Installez <strong>Docker Engine</strong> et son plugin <strong>Compose</strong> en suivant la page officielle de votre distribution : <a href="https://docs.docker.com/engine/install/">docs.docker.com/engine/install</a>. Elle est tenue à jour et propose, pour Ubuntu, Debian, Fedora et d'autres, une série de commandes à copier.</p>
+            <p>Ensuite, pour utiliser Docker sans écrire <code>sudo</code> à chaque fois, puis le démarrer avec le système :</p>
+            <div class="code" data-copy><pre><code>sudo usermod -aG docker $USER
+sudo systemctl enable --now docker</code></pre></div>
+            <p>Fermez puis rouvrez votre session pour que le changement de groupe soit pris en compte.</p>
+          </div>
+
+          <h3>Ouvrir un terminal</h3>
+          <p>Le <strong>terminal</strong> est une fenêtre où l'on tape des commandes. Vous n'en aurez besoin que quelques minutes.</p>
+          <div class="os-block" data-os="mac"><p>Appuyez sur <kbd>⌘</kbd> + <kbd>Espace</kbd>, tapez « Terminal », puis <kbd>Entrée</kbd>.</p></div>
+          <div class="os-block" data-os="windows"><p>Ouvrez le menu Démarrer, tapez « PowerShell », puis cliquez sur <strong>Windows PowerShell</strong>.</p></div>
+          <div class="os-block" data-os="linux"><p>Appuyez sur <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>, ou cherchez « Terminal » dans vos applications.</p></div>
+
+          <h3>Vérifier que Docker répond</h3>
+          <p>Dans le terminal, tapez ces deux commandes (une ligne à la fois, <kbd>Entrée</kbd> après chaque) :</p>
+          <div class="code" data-copy><pre><code>docker --version
+docker compose version</code></pre></div>
+          <p>Chacune doit répondre par un numéro de version. Si vous lisez « command not found » ou une erreur de connexion, Docker n'est pas encore lancé ou pas installé : voir <a href="depannage.html#docker-absent">Dépannage</a>.</p>
+
+          <h2 id="dossier"><span class="step-title"><span class="n">2</span>Préparer le fichier</span></h2>
+
+          <p>Vous allez créer un dossier <code>slowmail</code> et y placer <strong>un seul fichier</strong>, <code>docker-compose.yml</code>. Il dit à Docker quoi lancer, et contient vos réglages.</p>
+
+          <div class="os-block" data-os="mac">
+            <div class="code" data-copy><pre><code>mkdir -p ~/slowmail
+cd ~/slowmail
+curl -fsSLO __SITE_URL__/telecharger/docker-compose.yml</code></pre></div>
+          </div>
+          <div class="os-block" data-os="linux">
+            <div class="code" data-copy><pre><code>mkdir -p ~/slowmail
+cd ~/slowmail
+curl -fsSLO __SITE_URL__/telecharger/docker-compose.yml</code></pre></div>
+          </div>
+          <div class="os-block" data-os="windows">
+            <div class="code" data-copy><pre><code>mkdir $HOME\slowmail
+cd $HOME\slowmail
+Invoke-WebRequest -Uri __SITE_URL__/telecharger/docker-compose.yml -OutFile docker-compose.yml</code></pre></div>
+          </div>
+
+          <p>Vous pouvez aussi <a href="telecharger/docker-compose.yml" download>télécharger le fichier avec votre navigateur</a> et le ranger dans un dossier <code>slowmail</code> que vous aurez créé. Vérifiez alors que son nom est exactement <code>docker-compose.yml</code>, sans <code>.txt</code> à la fin.</p>
+
+          <h2 id="remplir"><span class="step-title"><span class="n">3</span>Remplir le fichier</span></h2>
+
+          <p>Ouvrez le fichier avec un éditeur de texte.</p>
+          <div class="os-block" data-os="mac">
+            <div class="code" data-copy><pre><code>open -e docker-compose.yml</code></pre></div>
+            <p>Il s'ouvre dans TextEdit. S'il affiche une barre de mise en forme (gras, italique…), faites <strong>Format, puis « Convertir au format texte »</strong> avant d'enregistrer : du texte enrichi casserait le fichier.</p>
+          </div>
+          <div class="os-block" data-os="windows">
+            <div class="code" data-copy><pre><code>notepad docker-compose.yml</code></pre></div>
+          </div>
+          <div class="os-block" data-os="linux">
+            <div class="code" data-copy><pre><code>nano docker-compose.yml</code></pre></div>
+            <p>Dans nano : <kbd>Ctrl</kbd> + <kbd>O</kbd> puis <kbd>Entrée</kbd> pour enregistrer, <kbd>Ctrl</kbd> + <kbd>X</kbd> pour quitter.</p>
+          </div>
+
+          <p>Repérez la section <code>À REMPLIR</code>. Vous ne changez que ce qui se trouve <strong>entre les guillemets</strong> :</p>
+
+          <div class="code"><pre><code>      SLOWMAIL_PASSWORD: "<span class="hl">votre-mot-de-passe-long</span>"
+
+      MAIL_HOST: "ssl0.ovh.net"
+      MAIL_PORT: "465"
+      MAIL_SCHEME: "smtps"
+      MAIL_USERNAME: "<span class="hl">contact@votre-domaine.fr</span>"
+      MAIL_PASSWORD: "<span class="hl">le-mot-de-passe-de-cette-boite</span>"
+      MAIL_FROM_ADDRESS: "<span class="hl">contact@votre-domaine.fr</span>"
+      MAIL_FROM_NAME: "<span class="hl">Camille Roche</span>"</code></pre></div>
+
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Ligne</th><th>Ce qu'il faut mettre</th></tr></thead>
+              <tbody>
+                <tr><td><code>SLOWMAIL_PASSWORD</code></td><td>Un mot de passe <strong>nouveau</strong>, long (une phrase fait très bien l'affaire), pour entrer dans SlowMail. Ne réutilisez pas un mot de passe existant. Tant qu'il est vide, personne ne peut se connecter.</td></tr>
+                <tr><td><code>MAIL_HOST</code>, <code>MAIL_PORT</code>, <code>MAIL_SCHEME</code></td><td>Le serveur d'envoi de votre messagerie. Les valeurs du fichier sont celles d'OVH. Voir ci-dessous pour un autre hébergeur.</td></tr>
+                <tr><td><code>MAIL_USERNAME</code></td><td>L'identifiant de votre boîte, le plus souvent son adresse complète.</td></tr>
+                <tr><td><code>MAIL_PASSWORD</code></td><td>Le mot de passe de cette boîte mail (pas celui de SlowMail).</td></tr>
+                <tr><td><code>MAIL_FROM_ADDRESS</code></td><td>L'adresse qui apparaîtra comme expéditeur. Elle doit être celle de la boîte, ou une adresse que votre hébergeur vous autorise à utiliser.</td></tr>
+                <tr><td><code>MAIL_FROM_NAME</code></td><td>Le nom affiché à côté de l'adresse.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 id="smtp">Trouver les réglages SMTP d'un autre hébergeur</h3>
+          <p>Cherchez dans l'aide de votre hébergeur « paramètres SMTP » ou « serveur sortant ». Vous y trouverez un nom de serveur, un port, et le type de sécurité :</p>
+          <ul>
+            <li>port <strong>465</strong>, SSL/TLS : gardez <code>MAIL_SCHEME: "smtps"</code> ;</li>
+            <li>port <strong>587</strong>, STARTTLS : mettez <code>MAIL_PORT: "587"</code> et <code>MAIL_SCHEME: "smtp"</code>.</li>
+          </ul>
+          <p>Seul OVH a été essayé pour de vrai. Si votre premier envoi de test échoue, l'erreur du serveur est affichée dans SlowMail (sans votre mot de passe) : c'est presque toujours l'identifiant, le mot de passe ou le port.</p>
+
+          <div class="warn">
+            <strong>Ce fichier contient vos mots de passe</strong>
+            <p>Gardez-le pour vous : ne l'envoyez à personne, ne le déposez pas sur un dépôt public (GitHub, par exemple), ne le collez pas dans un forum pour demander de l'aide sans avoir effacé les lignes <code>PASSWORD</code>.</p>
+          </div>
+
+          <div class="note">
+            <strong>Trois pièges fréquents</strong>
+            <ul>
+              <li>Gardez les <strong>guillemets</strong> et ne changez pas l'<strong>alignement</strong> : ce fichier est sensible aux espaces en début de ligne.</li>
+              <li>Si un mot de passe contient le signe <code>$</code>, écrivez-le deux fois (<code>$$</code>).</li>
+              <li>Laissez <code>SLOWMAIL_ENABLED: "false"</code> pour l'instant. C'est l'interrupteur général : vous le passerez à <code>"true"</code> au moment de vos premiers essais.</li>
+            </ul>
+          </div>
+
+          <p>Enregistrez le fichier et fermez l'éditeur.</p>
+
+          <h2 id="demarrer"><span class="step-title"><span class="n">4</span>Démarrer SlowMail</span></h2>
+
+          <p>Dans le terminal, toujours dans le dossier <code>slowmail</code> :</p>
+          <div class="code" data-copy><pre><code>docker compose up -d</code></pre></div>
+
+          <p>La première fois, Docker télécharge SlowMail (quelques dizaines de mégaoctets) : comptez une minute selon votre connexion. Puis tapez :</p>
+          <div class="code" data-copy><pre><code>docker compose ps</code></pre></div>
+          <p>La colonne <code>STATUS</code> doit afficher <code>Up</code> puis, au bout d'une minute environ, <code>(healthy)</code>. C'est le temps que SlowMail prépare sa base et fasse son premier passage.</p>
+
+          <div class="ok">
+            <strong>Si vous voyez « healthy », c'est gagné.</strong>
+            <p>Sinon, patientez encore une minute et recommencez. Si cela ne change pas : <a href="depannage.html#pas-healthy">Dépannage</a>.</p>
+          </div>
+
+          <h2 id="ouvrir"><span class="step-title"><span class="n">5</span>Ouvrir SlowMail</span></h2>
+
+          <p>Dans votre navigateur, allez à l'adresse <a href="http://localhost:8080">http://localhost:8080</a>. Entrez le mot de passe que vous avez choisi à l'étape 3.</p>
+
+          <figure class="shot">
+            <img src="assets/img/app-login.png" width="1200" height="620" loading="lazy" alt="La page de connexion de SlowMail : un champ de mot de passe et un bouton « Entrer ».">
+            <figcaption>La page de connexion.</figcaption>
+          </figure>
+
+          <p>En haut de chaque page, un <strong>bandeau d'état</strong> vous dit si tout va bien. Pour l'instant, une ligne orange doit dire « Envois désactivés (SLOWMAIL_ENABLED=false) : aucun mail ne partira ». C'est normal et voulu.</p>
+
+          <figure class="shot">
+            <img src="assets/img/app-campaigns.png" width="1200" height="560" loading="lazy" alt="La liste des campagnes de SlowMail, avec le bandeau d'état en haut de page.">
+            <figcaption>Le bandeau d'état en haut, puis la liste des campagnes (ici avec une campagne d'exemple, envois autorisés : chez vous, la ligne orange s'ajoute au-dessus).</figcaption>
+          </figure>
+
+          <p>Vérifiez la ligne « Dernier passage du scheduler : il y a 0 min » : elle prouve que le planificateur tourne. Au démarrage, attendez une minute pour la voir.</p>
+
+          <div class="ok">
+            <strong>SlowMail est installé.</strong>
+            <p>Il reste à faire un premier essai en toute sécurité, sur vos propres adresses.</p>
+          </div>
+
+          <p><a class="btn btn-primary" href="premiers-envois.html">Passer aux premiers envois</a></p>
+
+          <h2 id="quotidien">Au quotidien</h2>
+
+          <p>Toutes ces commandes se tapent dans le terminal, <strong>dans le dossier <code>slowmail</code></strong> (<code>cd ~/slowmail</code> sur Mac et Linux, <code>cd $HOME\slowmail</code> sous Windows).</p>
+
+          <h3>Ouvrir, arrêter, redémarrer</h3>
+          <div class="table-scroll">
+            <table>
+              <tbody>
+                <tr><td>Ouvrir l'interface</td><td><a href="http://localhost:8080">http://localhost:8080</a> (Docker doit être lancé)</td></tr>
+                <tr><td>Arrêter SlowMail</td><td><code>docker compose stop</code></td></tr>
+                <tr><td>Le relancer</td><td><code>docker compose start</code></td></tr>
+                <tr><td>Appliquer un changement du fichier</td><td><code>docker compose up -d</code> (à refaire à chaque modification de <code>docker-compose.yml</code>)</td></tr>
+                <tr><td>Voir ce qu'il dit</td><td><code>docker compose logs --tail 50</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Mon ordinateur s'éteint ou se met en veille</h3>
+          <p>SlowMail n'envoie que lorsque l'ordinateur est allumé et que Docker tourne. Rien n'est perdu : au retour, le bandeau indique le dernier passage du planificateur, et SlowMail <strong>ne rattrape pas</strong> les envois manqués en rafale. Les créneaux passés sont replanifiés dans votre plage horaire, et le quota d'un jour manqué n'est pas cumulé. Si l'ordinateur s'éteint <em>pendant</em> un envoi, la ligne est marquée « À vérifier » et jamais renvoyée toute seule.</p>
+          <p>Pour que SlowMail redémarre après un redémarrage de l'ordinateur :</p>
+          <ul>
+            <li><strong>Mac et Windows</strong> : dans les réglages de Docker Desktop (ou d'OrbStack), activez le lancement à l'ouverture de session. SlowMail se relance alors tout seul avec Docker.</li>
+            <li><strong>Linux</strong> : c'est déjà fait si vous avez lancé <code>sudo systemctl enable --now docker</code>.</li>
+          </ul>
+          <p>Pensez aussi aux réglages d'énergie de votre ordinateur : pendant votre plage d'envoi, il ne doit pas se mettre en veille.</p>
+
+          <h3>Mettre à jour</h3>
+          <div class="code" data-copy><pre><code>docker compose pull
+docker compose up -d</code></pre></div>
+          <p>La première commande télécharge la dernière version, la seconde remplace SlowMail par elle. <strong>Vos campagnes et vos destinataires sont conservés</strong> : ils vivent dans un espace à part (un « volume » Docker), que la mise à jour ne touche pas.</p>
+
+          <h3>Sauvegarder</h3>
+          <p>Pensez à sauvegarder avant une mise à jour, et de temps en temps pendant une campagne :</p>
+          <div class="code" data-copy><pre><code>docker compose exec slowmail php artisan slowmail:backup
+docker compose cp slowmail:/data/backups/. ./sauvegardes</code></pre></div>
+          <p>Vous trouvez alors un fichier daté dans le dossier <code>sauvegardes</code>. Copiez-le aussi ailleurs que sur cet ordinateur (clé USB, autre disque…) : une sauvegarde qui vit au même endroit que l'original ne protège pas d'une panne du disque.</p>
+
+          <h3>Tout désinstaller</h3>
+          <div class="code" data-copy><pre><code>docker compose down</code></pre></div>
+          <p>Cela arrête et supprime SlowMail, mais <strong>garde vos données</strong>. Si vous le réinstallez plus tard, tout est là.</p>
+          <div class="danger">
+            <strong>Pour effacer aussi toutes vos données</strong>
+            <p><code>docker compose down -v</code> supprime la base : campagnes, destinataires, journal. C'est définitif. Faites une sauvegarde avant si vous avez le moindre doute.</p>
+          </div>
+
+          <h2 id="suite">Et ensuite ?</h2>
+          <ul>
+            <li><a href="premiers-envois.html">Premiers envois</a> : de la simulation à vos trois premiers vrais mails, sans risque.</li>
+            <li><a href="bon-usage.html">Bon usage</a> : délivrabilité, désinscription et cadre légal.</li>
+            <li><a href="depannage.html">Dépannage</a> : les problèmes qu'on rencontre le plus souvent.</li>
+          </ul>
+
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p><strong>SlowMail</strong> est un logiciel libre sous licence AGPL-3.0-or-later.</p>
+        <p>Fourni tel quel, sans garantie.</p>
+      </div>
+      <ul>
+        <li><a href="https://github.com/__REPO__">Code source</a></li>
+        <li><a href="https://github.com/__REPO__/blob/main/LICENSE">Licence</a></li>
+        <li><a href="https://github.com/__REPO__/issues">Signaler un problème</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="bon-usage.html">Bon usage</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

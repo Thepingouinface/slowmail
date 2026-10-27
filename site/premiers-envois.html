@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premiers envois sans risque avec SlowMail</title>
+  <meta name="description" content="De la simulation à vos trois premiers vrais mails : la marche à suivre prudente pour essayer SlowMail sur vos propres adresses avant une vraie campagne.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m4 7.5 8 6.2 8-6.2"/></svg></span>
+        SlowMail
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="tutoriel.html">Installer</a>
+        <a href="premiers-envois.html" aria-current="page">Premiers envois</a>
+        <a href="bon-usage.html">Bon usage</a>
+        <a href="depannage.html">Dépannage</a>
+        <a href="https://github.com/__REPO__">Code source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Premiers envois sans risque</h1>
+        <p class="lead">Avant la moindre vraie campagne, répétez le parcours complet sur <strong>vos propres adresses</strong> : d'abord en simulation, puis pour de vrai, trois mails suffisent.</p>
+      </div>
+
+      <div class="layout">
+        <nav class="toc" aria-label="Sur cette page">
+          <strong>Sur cette page</strong>
+          <ol>
+            <li><a href="#autoriser">1. Autoriser les envois</a></li>
+            <li><a href="#campagne">2. Créer la campagne</a></li>
+            <li><a href="#import">3. Importer vos adresses</a></li>
+            <li><a href="#modele">4. Écrire le modèle</a></li>
+            <li><a href="#simulation">5. Régler et simuler</a></li>
+            <li><a href="#reel">6. Passer en réel</a></li>
+            <li><a href="#vraie">7. La vraie campagne</a></li>
+            <li><a href="#statuts">Comprendre les statuts</a></li>
+            <li><a href="#arreter">Tout arrêter</a></li>
+          </ol>
+        </nav>
+
+        <article class="article prose">
+
+          <p>Ce parcours suppose que SlowMail est installé et que vous voyez son interface (voir <a href="tutoriel.html">le tutoriel d'installation</a>). Prévoyez trois adresses à vous, de préférence chez des fournisseurs différents (la vôtre, une adresse personnelle, une autre boîte) : vous verrez ainsi comment arrivent vos mails, dans la boîte de réception ou dans les indésirables.</p>
+
+          <h2 id="autoriser"><span class="step-title"><span class="n">1</span>Autoriser les envois</span></h2>
+
+          <p>Les envois sont coupés par défaut. Dans votre fichier <code>docker-compose.yml</code>, passez l'interrupteur général à <code>"true"</code> :</p>
+          <div class="code"><pre><code>      SLOWMAIL_ENABLED: "<span class="hl">true</span>"</code></pre></div>
+          <p>Puis, dans le terminal, dans le dossier <code>slowmail</code> :</p>
+          <div class="code" data-copy><pre><code>docker compose up -d</code></pre></div>
+          <p>Rechargez SlowMail au bout d'une minute : l'avertissement « Envois désactivés » a disparu, et le bandeau affiche en vert « Dernier passage du scheduler : il y a 0 min ». Aucun mail ne part pour autant : aucune campagne n'est active.</p>
+
+          <h2 id="campagne"><span class="step-title"><span class="n">2</span>Créer la campagne</span></h2>
+          <p>Dans <strong>Campagnes</strong>, donnez un nom à la campagne d'essai (« Essai », par exemple) et cliquez sur <strong>Créer</strong>.</p>
+
+          <h2 id="import"><span class="step-title"><span class="n">3</span>Importer vos trois adresses</span></h2>
+          <p>Créez un fichier texte nommé <code>essai.csv</code> (dans un éditeur de texte, pas dans un traitement de texte) :</p>
+          <div class="code"><pre><code>EMAIL;PRENOM;STRUCTURE
+adresse1@exemple.fr;Camille;Essai numéro 1
+adresse2@exemple.fr;Camille;Essai numéro 2
+adresse3@exemple.fr;Camille;Essai numéro 3</code></pre></div>
+          <p>Remplacez les adresses par les vôtres. La colonne <code>EMAIL</code> est obligatoire, le séparateur peut être <code>;</code> ou <code>,</code>, et les autres colonnes deviennent des variables utilisables dans le texte.</p>
+          <p>Dans l'onglet <strong>Destinataires</strong>, choisissez le fichier et cliquez sur <strong>Analyser</strong> : SlowMail affiche un rapport (lignes valides, rejetées avec la raison, déjà contactées…) et n'ajoute rien avant que vous confirmiez.</p>
+
+          <figure class="shot">
+            <img src="assets/img/app-recipients.png" width="1200" height="940" loading="lazy" alt="L'onglet Destinataires : zone d'import de CSV, filtres par statut et tableau des adresses.">
+            <figcaption>L'onglet Destinataires (données fictives).</figcaption>
+          </figure>
+
+          <div class="note">
+            <strong>Pour une vraie liste plus tard</strong>
+            <p>Mêmes règles : une colonne d'adresses, une ligne par contact, encodage UTF-8. Les adresses avec des accents avant le @ ne sont pas prises en charge (le rapport le signale). Une colonne facultative <code>PRIORITE</code> (plus petit = plus tôt) fixe l'ordre d'envoi.</p>
+          </div>
+
+          <h2 id="modele"><span class="step-title"><span class="n">4</span>Écrire le modèle et s'envoyer un test</span></h2>
+          <p>Dans l'onglet <strong>Modèle</strong>, écrivez l'objet et le corps du mail, en texte brut. Une variable s'écrit entre crochets, avec la colonne du CSV :</p>
+
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Vous écrivez</th><th>Effet</th></tr></thead>
+              <tbody>
+                <tr><td><code>[PRENOM]</code></td><td>remplacé par la colonne <code>PRENOM</code> du CSV</td></tr>
+                <tr><td><code>[STRUCTURE|votre structure]</code></td><td>valeur de secours si la case du CSV est vide</td></tr>
+                <tr><td><code>[TITRE|]</code></td><td>rien du tout si c'est vide, et le mail part quand même</td></tr>
+                <tr><td><code>[DATE]</code></td><td>le jour de l'envoi (« 27 octobre 2026 »)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Une variable dont la case est vide, <strong>sans valeur de secours</strong>, empêche le mail de partir (la ligne est ignorée, avec la raison). C'est volontaire : un mail qui commence par « Bonjour , » ne part jamais.</p>
+
+          <div class="warn">
+            <strong>La mention de désinscription est obligatoire</strong>
+            <p>Le texte fixe du corps doit contenir le mot <code>stop</code> (par exemple : « Pour ne plus recevoir de mails de ma part, répondez simplement STOP. »). Sans cela, SlowMail refuse d'activer la campagne.</p>
+          </div>
+
+          <figure class="shot">
+            <img src="assets/img/app-template.png" width="1200" height="1000" loading="lazy" alt="L'onglet Modèle : l'éditeur à gauche, les contrôles et l'aperçu pour un contact à droite.">
+            <figcaption>L'éditeur et l'aperçu pour un contact (données fictives).</figcaption>
+          </figure>
+
+          <p>Enregistrez, choisissez un contact dans l'aperçu pour voir le mail exact, puis cliquez sur <strong>« M'envoyer un test »</strong>. C'est le <strong>premier vrai envoi</strong> : il part vers votre adresse d'expédition. Vérifiez qu'il arrive, de qui il semble venir, et que la réponse va où vous voulez.</p>
+          <p>Si le test est refusé, la raison s'affiche : interrupteur général encore à <code>"false"</code>, adresse d'expédition vide, ou réglage SMTP à corriger (voir <a href="depannage.html">Dépannage</a>).</p>
+
+          <h2 id="simulation"><span class="step-title"><span class="n">5</span>Régler le rythme et simuler</span></h2>
+          <p>Dans l'onglet <strong>Réglages</strong>, pour l'essai :</p>
+          <ul>
+            <li>cochez <strong>Mode simulation</strong> : tout fonctionne, mais aucun mail ne part ;</li>
+            <li>3 mails par jour, 1 minute d'écart, 0 jour de délai entre deux mails à la même organisation ;</li>
+            <li>une plage qui commence dans quelques minutes (de l'heure actuelle à une heure plus tard), avec les jours utiles cochés.</li>
+          </ul>
+          <p>Enregistrez : le récapitulatif en clair doit annoncer ce que vous attendez.</p>
+
+          <figure class="shot">
+            <img src="assets/img/app-settings.png" width="1200" height="1000" loading="lazy" alt="L'onglet Réglages : quota quotidien, plage d'envoi, jours, écart minimum et récapitulatif.">
+            <figcaption>L'onglet Réglages (données fictives).</figcaption>
+          </figure>
+
+          <p>Cliquez sur <strong>Activer</strong> (la confirmation précise « en simulation »). En quelques minutes, regardez le bandeau (prochain envoi prévu) et l'onglet <strong>Journal</strong> : les trois lignes passent à « Simulé », avec le texte exact gardé, et rien n'est parti. Profitez-en pour essayer <strong>Exporter en CSV</strong>, un « Répondu » avec une note, et la <strong>liste de suppression</strong>.</p>
+
+          <figure class="shot">
+            <img src="assets/img/app-journal.png" width="1200" height="640" loading="lazy" alt="Le journal d'une campagne, du plus récent au plus ancien.">
+            <figcaption>Le journal raconte chaque événement (données fictives).</figcaption>
+          </figure>
+
+          <h2 id="reel"><span class="step-title"><span class="n">6</span>Passer en réel</span></h2>
+          <ol>
+            <li><strong>Mettre en pause</strong> la campagne.</li>
+            <li>Dans Réglages, décochez le <strong>Mode simulation</strong> et enregistrez.</li>
+            <li>Cliquez sur <strong>Remettre en attente</strong> : les trois lignes « Simulé » redeviennent « En attente » (elles ne partent pas toutes seules, c'est volontaire).</li>
+            <li>Corrigez la plage horaire si elle est déjà passée.</li>
+            <li><strong>Reprendre</strong> : la confirmation annonce que de <strong>vrais mails</strong> vont partir.</li>
+          </ol>
+          <p>Les trois mails arrivent chez vous, à des heures différentes, un à la fois. Vérifiez la boîte de réception (ou les indésirables), le texte brut, la réponse, la mention de désinscription. Le journal doit dire « Envoyé » trois fois.</p>
+
+          <div class="ok">
+            <strong>Si tout est bon, vous êtes prêt.</strong>
+            <p>Vous avez vu SlowMail planifier, envoyer, journaliser, et vous savez le mettre en pause. Lisez aussi la page <a href="bon-usage.html">Bon usage</a> avant de contacter de vraies personnes.</p>
+          </div>
+
+          <h2 id="vraie"><span class="step-title"><span class="n">7</span>La vraie campagne</span></h2>
+          <p>Créez une nouvelle campagne, importez votre liste, écrivez le modèle, puis activez-la. Les réglages par défaut sont prudents : 4 mails par jour, de 9 h 30 à 17 h 30, du lundi au vendredi hors jours fériés, 25 minutes d'écart minimum, une semaine avant de réécrire à une même organisation. Si votre messagerie est neuve ou peu utilisée, cochez la <strong>montée progressive</strong> : on commence à 2 mails par jour et on augmente peu à peu.</p>
+
+          <h2 id="statuts">Comprendre les statuts</h2>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Statut</th><th>Ce que cela veut dire</th></tr></thead>
+              <tbody>
+                <tr><td><span class="pill">En attente</span></td><td>Pas encore planifié, il partira à un prochain créneau.</td></tr>
+                <tr><td><span class="pill">Planifié</span></td><td>Une heure d'envoi est tirée pour aujourd'hui.</td></tr>
+                <tr><td><span class="pill">Envoyé</span></td><td>Le serveur de messagerie a accepté le mail.</td></tr>
+                <tr><td><span class="pill">Simulé</span></td><td>Envoi pour de faux (mode simulation) : rien n'est parti.</td></tr>
+                <tr><td><span class="pill">Ignoré</span></td><td>Une variable était vide sans valeur de secours : le mail n'est pas parti, la raison est indiquée.</td></tr>
+                <tr><td><span class="pill">Échec</span></td><td>Le serveur a refusé le mail (ou 3 tentatives temporaires, à une heure d'écart, ont échoué).</td></tr>
+                <tr><td><span class="pill">Rebond</span></td><td>L'adresse n'existe pas : elle est ajoutée à la liste de suppression.</td></tr>
+                <tr><td><span class="pill">Supprimé</span></td><td>L'adresse est dans la liste de suppression : rien ne lui est envoyé.</td></tr>
+                <tr><td><span class="pill">À vérifier</span></td><td>L'envoi a été interrompu en plein vol : on ne sait pas si le mail est parti.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Un envoi « À vérifier »</h3>
+          <p>Si l'ordinateur s'éteint ou le réseau tombe au pire moment, SlowMail ne sait pas si le mail est arrivé. Il <strong>ne le renvoie jamais tout seul</strong> : l'onglet Destinataires affiche un encadré avec l'objet, l'heure et l'identifiant du message. Cherchez-le dans les envoyés de votre messagerie, puis cliquez sur <strong>« C'est parti »</strong> (la ligne devient envoyée) ou <strong>« Pas parti »</strong> (elle retourne en attente et partira à un prochain créneau).</p>
+
+          <h3>Quand quelqu'un répond</h3>
+          <p>SlowMail ne lit pas votre boîte. Quand une réponse arrive, ouvrez « Réponse et détails » sur la ligne et cliquez sur <strong>Répondu</strong>, <strong>Rendez-vous</strong> ou <strong>Stop</strong>. Un « Stop » ajoute l'adresse à la liste de suppression, dans toutes vos campagnes, tout de suite.</p>
+
+          <h2 id="arreter">Tout arrêter, tout de suite</h2>
+          <ul>
+            <li><strong>Une campagne</strong> : le bouton <strong>Mettre en pause</strong>.</li>
+            <li><strong>Tout, même le mail de test</strong> : remettez <code>SLOWMAIL_ENABLED: "false"</code> dans <code>docker-compose.yml</code> puis <code>docker compose up -d</code>.</li>
+            <li><strong>Un bandeau rouge</strong> : le planificateur n'a pas tourné depuis plus de 10 minutes (ordinateur en veille, Docker arrêté). Rien ne part et rien n'est rattrapé.</li>
+            <li><strong>Une pause « Disjoncteur »</strong> : trois échecs d'envoi de suite (identifiants refusés, par exemple). La raison est affichée en haut de la campagne ; corrigez, puis <strong>Reprendre</strong>.</li>
+          </ul>
+
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p><strong>SlowMail</strong> est un logiciel libre sous licence AGPL-3.0-or-later.</p>
+        <p>Fourni tel quel, sans garantie.</p>
+      </div>
+      <ul>
+        <li><a href="https://github.com/__REPO__">Code source</a></li>
+        <li><a href="https://github.com/__REPO__/blob/main/LICENSE">Licence</a></li>
+        <li><a href="https://github.com/__REPO__/issues">Signaler un problème</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="tutoriel.html">Tutoriel</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

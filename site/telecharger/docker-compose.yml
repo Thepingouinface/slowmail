@@ -1,0 +1,56 @@
+# SlowMail : un seul fichier à télécharger, une seule section à compléter.
+# Le tutoriel pas à pas : https://github.com/__REPO__ (et le site SlowMail).
+#
+# 1. Remplissez les valeurs de la section « À REMPLIR » (entre guillemets, sans changer l'alignement).
+# 2. Dans ce dossier :  docker compose up -d
+# 3. Ouvrez http://localhost:8080
+#
+# Rien ne part tant que vous ne l'avez pas décidé : SLOWMAIL_ENABLED reste à "false"
+# jusqu'à ce que vous le passiez à "true" vous-même (voir « Premiers envois » sur le site).
+
+name: slowmail
+
+services:
+  slowmail:
+    image: ghcr.io/__REPO_LC__:latest
+    restart: unless-stopped
+    ports:
+      # Joignable depuis cet ordinateur seulement. Ne retirez pas « 127.0.0.1 » : il n'y a qu'un mot de passe.
+      - "127.0.0.1:8080:8000"
+    volumes:
+      # Vos campagnes, vos destinataires et la clé de l'application. Sans ce volume, tout disparaît.
+      - slowmail-data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      # ---------------------------------------------------------------- À REMPLIR
+      # Le mot de passe pour entrer dans SlowMail (vide = personne ne peut se connecter).
+      # Si votre mot de passe contient le signe $, écrivez-le deux fois ($$).
+      SLOWMAIL_PASSWORD: ""
+
+      # Votre messagerie. Exemple OVH ; pour un autre hébergeur, reprenez ses paramètres SMTP.
+      MAIL_HOST: "ssl0.ovh.net"
+      MAIL_PORT: "465"
+      MAIL_SCHEME: "smtps"
+      MAIL_USERNAME: ""            # souvent votre adresse complète
+      MAIL_PASSWORD: ""            # le mot de passe de cette boîte (il ne quitte jamais cet ordinateur)
+      MAIL_FROM_ADDRESS: ""        # l'adresse qui apparaît comme expéditeur
+      MAIL_FROM_NAME: ""           # le nom qui apparaît comme expéditeur
+
+      # Facultatif : adresse qui reçoit les réponses (par défaut, l'adresse d'expédition).
+      SLOWMAIL_REPLY_TO: ""
+      # Le fuseau horaire de vos heures d'envoi.
+      SLOWMAIL_TIMEZONE: "Europe/Paris"
+
+      # ------------------------------------------- INTERRUPTEUR GÉNÉRAL (à "true" pour envoyer pour de bon)
+      SLOWMAIL_ENABLED: "false"
+
+      # ------------------------------------------------------ Le reste : inutile d'y toucher
+      # Le mot que doit contenir chaque mail pour qu'une campagne puisse démarrer (mention de désinscription).
+      SLOWMAIL_OPTOUT_TEXT: "stop"
+
+volumes:
+  slowmail-data:

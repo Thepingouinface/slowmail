@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bon usage de SlowMail : délivrabilité et cadre légal</title>
+  <meta name="description" content="Écrire à des inconnus sans nuire à votre réputation : bonnes pratiques d'envoi, désinscription, données personnelles et rappel du cadre légal en France et dans l'Union européenne.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m4 7.5 8 6.2 8-6.2"/></svg></span>
+        SlowMail
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="tutoriel.html">Installer</a>
+        <a href="premiers-envois.html">Premiers envois</a>
+        <a href="bon-usage.html" aria-current="page">Bon usage</a>
+        <a href="depannage.html">Dépannage</a>
+        <a href="https://github.com/__REPO__">Code source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Bon usage</h1>
+        <p class="lead">SlowMail vous aide à envoyer lentement et prudemment. Il ne peut pas décider à votre place à qui écrire, ni de quoi. Voici les bases pour le faire correctement.</p>
+      </div>
+
+      <div class="layout">
+        <nav class="toc" aria-label="Sur cette page">
+          <strong>Sur cette page</strong>
+          <ol>
+            <li><a href="#principes">Les principes</a></li>
+            <li><a href="#delivrabilite">Arriver en boîte de réception</a></li>
+            <li><a href="#message">Écrire un bon message</a></li>
+            <li><a href="#desinscription">Désinscription et réponses</a></li>
+            <li><a href="#legal">Cadre légal</a></li>
+            <li><a href="#donnees">Vos données</a></li>
+            <li><a href="#securite">Sécurité</a></li>
+          </ol>
+        </nav>
+
+        <article class="article prose">
+
+          <div class="warn">
+            <strong>Ce n'est pas un avis juridique</strong>
+            <p>Cette page rappelle des règles générales, valables en France et dans l'Union européenne au moment de la rédaction. Les règles changent et dépendent de votre situation. Pour un cas précis, renseignez-vous auprès de la <a href="https://www.cnil.fr/">CNIL</a> ou d'un professionnel du droit. L'utilisation de SlowMail et le contenu de vos envois restent sous votre responsabilité.</p>
+          </div>
+
+          <h2 id="principes">Les principes</h2>
+          <ul>
+            <li><strong>Peu, mais bien.</strong> Quatre mails soignés par jour valent mieux que cent mails génériques. C'est aussi ce qui protège votre réputation d'expéditeur.</li>
+            <li><strong>Des gens qui ont une raison de vous lire.</strong> Votre message doit avoir un rapport avec leur activité. Si vous ne savez pas pourquoi vous écrivez à quelqu'un, ne lui écrivez pas.</li>
+            <li><strong>Une sortie facile.</strong> Quiconque demande à ne plus être contacté ne doit plus l'être, tout de suite et sans discussion.</li>
+            <li><strong>Dans le doute, ne rien envoyer.</strong> C'est la règle qui guide SlowMail, et qui peut guider vos choix.</li>
+          </ul>
+
+          <h2 id="delivrabilite">Arriver en boîte de réception</h2>
+          <p>Que votre mail arrive ou non dans les indésirables dépend surtout de votre domaine et de votre réputation.</p>
+          <ul>
+            <li><strong>Écrivez depuis une adresse sur votre propre nom de domaine</strong> (<code>vous@votre-entreprise.fr</code>), pas depuis une adresse gratuite grand public. Les messageries gratuites limitent et surveillent de près les envois en nombre, et peuvent suspendre un compte.</li>
+            <li><strong>Faites authentifier votre domaine.</strong> Trois réglages, faits chez l'hébergeur de votre nom de domaine : <strong>SPF</strong>, <strong>DKIM</strong> et <strong>DMARC</strong>. Ils prouvent que vos mails viennent bien de vous. La plupart des hébergeurs expliquent comment les activer ; cherchez ces trois noms dans leur aide.</li>
+            <li><strong>Montez doucement.</strong> Une boîte neuve qui envoie soudain beaucoup de mails paraît suspecte. Gardez le rythme par défaut, ou cochez la montée progressive.</li>
+            <li><strong>Surveillez les rebonds.</strong> Une adresse qui n'existe pas fait du tort à votre réputation. SlowMail ajoute automatiquement ces adresses à la liste de suppression et vous les montre dans le journal. Nettoyez votre liste avant l'import.</li>
+            <li><strong>Testez sur vous-même</strong> d'abord (voir <a href="premiers-envois.html">Premiers envois</a>), sur des adresses chez plusieurs fournisseurs.</li>
+          </ul>
+
+          <h2 id="message">Écrire un bon message</h2>
+          <ul>
+            <li><strong>Texte brut, court, humain.</strong> SlowMail n'envoie que du texte brut : c'est volontaire, et c'est le format qui ressemble le plus à un vrai mail écrit à la main.</li>
+            <li><strong>Dites qui vous êtes</strong> et pourquoi vous écrivez à cette personne, dès les premières lignes.</li>
+            <li><strong>Pas de formules d'alerte</strong> (« GRATUIT », « URGENT », beaucoup de points d'exclamation) ni de pièces jointes lourdes.</li>
+            <li><strong>Personnalisez avec des valeurs fiables.</strong> Une variable mal remplie (« Bonjour , », un nom de structure incorrect) se voit tout de suite. Utilisez l'aperçu pour plusieurs contacts avant d'activer, et des valeurs de secours pour les cases vides.</li>
+            <li><strong>Un seul appel à l'action</strong> : répondre, proposer un échange, demander le programme.</li>
+          </ul>
+
+          <h2 id="desinscription">Désinscription et réponses</h2>
+          <p>SlowMail exige la mention de désinscription (un mot-clé, <code>stop</code> par défaut) dans le texte fixe de chaque modèle avant d'autoriser l'activation de la campagne. Elle dit simplement à la personne comment cesser de recevoir vos mails, par exemple : « Pour ne plus recevoir de mails de ma part, répondez simplement STOP. »</p>
+          <p>SlowMail ajoute à chaque mail un en-tête de désinscription (<code>List-Unsubscribe</code>) qui pointe vers votre adresse d'expédition, mais il n'y a ni page ni lien de désinscription automatique, et <strong>SlowMail ne lit pas votre boîte de réception</strong>. Les demandes arrivent donc chez vous, et c'est à vous, quand une réponse arrive :</p>
+          <ul>
+            <li>de la noter sur la ligne du contact (<strong>Répondu</strong>, <strong>Rendez-vous</strong>) ;</li>
+            <li>de cliquer sur <strong>Stop</strong> pour toute demande de désinscription, même formulée autrement (« retirez-moi de votre liste », « arrêtez de m'écrire »). L'adresse est alors ajoutée à la liste de suppression, dans toutes vos campagnes, et plus rien ne lui est envoyé, même si un mail était déjà planifié.</li>
+          </ul>
+          <p>Faites-le le jour même, avant le prochain envoi prévu. Il n'y a volontairement pas de bouton pour retirer une adresse de la liste de suppression : un clic malheureux ferait repartir des mails.</p>
+
+          <h2 id="legal">Cadre légal (France et Union européenne)</h2>
+          <p>Les règles dépendent de la personne que vous contactez. Voici les grandes lignes, à vérifier pour votre cas.</p>
+
+          <h3>Vous écrivez à des professionnels, à propos de leur activité</h3>
+          <p>La prospection par mail est en général permise sans accord préalable (on parle d'« opposition » : la personne peut refuser), à condition que :</p>
+          <ul>
+            <li>votre proposition ait un <strong>rapport avec l'activité professionnelle</strong> du destinataire ;</li>
+            <li>la personne ait été <strong>informée</strong> que son adresse pouvait servir à de la prospection, et puisse s'y <strong>opposer</strong> facilement et gratuitement, à chaque message ;</li>
+            <li>le message indique clairement <strong>qui vous êtes</strong> et ne dissimule pas son caractère commercial.</li>
+          </ul>
+
+          <h3>Vous écrivez à des particuliers</h3>
+          <p>Il faut en général leur <strong>consentement préalable</strong>. SlowMail n'est pas fait pour cela : il ne gère ni consentement, ni double confirmation, et il est conçu pour de petits volumes de prospection professionnelle.</p>
+
+          <h3>Et les données personnelles ?</h3>
+          <p>Une adresse mail, un nom et une structure sont des données personnelles. Le RGPD vous demande, entre autres, de n'en collecter que le nécessaire, de les protéger, de ne pas les garder indéfiniment, et de répondre aux demandes d'accès, de rectification ou d'effacement. Gardez trace de l'origine de vos contacts : vous devrez pouvoir dire d'où vient une adresse.</p>
+
+          <div class="note">
+            <strong>Hors de France</strong>
+            <p>Dans d'autres pays, les règles diffèrent parfois nettement (certains exigent un consentement même entre professionnels). Renseignez-vous avant d'écrire à l'étranger.</p>
+          </div>
+
+          <h2 id="donnees">Vos données dans SlowMail</h2>
+          <ul>
+            <li>Tout est enregistré <strong>sur votre ordinateur</strong>, dans une base SQLite, dans un volume Docker. Rien n'est envoyé à un service tiers : SlowMail contacte seulement le serveur de messagerie que vous avez indiqué, pour envoyer vos mails.</li>
+            <li>Aucun suivi d'ouverture ni de clic n'est mis en place.</li>
+            <li>Les mots de passe de votre messagerie ne vivent que dans votre fichier <code>docker-compose.yml</code>. SlowMail ne les affiche jamais et ne les écrit pas dans ses journaux, ni le corps de vos mails.</li>
+            <li><strong>Minimisez la durée de conservation.</strong> La commande <code>docker compose exec slowmail php artisan slowmail:purge</code> efface le texte rendu et les données du CSV des campagnes terminées depuis plus de 90 jours (<code>--days=30</code> pour changer). Il reste l'adresse, le statut, les dates et les notes : de quoi savoir qui a déjà été contacté, sans garder le reste.</li>
+          </ul>
+
+          <h2 id="securite">Sécurité</h2>
+          <ul>
+            <li>SlowMail n'est joignable <strong>que depuis votre ordinateur</strong> (<code>127.0.0.1</code>). N'ouvrez pas son port sur Internet ni sur un réseau partagé : il n'est protégé que par un mot de passe, et il n'a pas été conçu comme un service public.</li>
+            <li>Choisissez un mot de passe <strong>long et unique</strong>.</li>
+            <li>Ne partagez pas votre fichier <code>docker-compose.yml</code> : il contient vos identifiants.</li>
+            <li>Mettez à jour de temps en temps (<code>docker compose pull</code> puis <code>docker compose up -d</code>).</li>
+            <li>Faites une <a href="tutoriel.html#quotidien">sauvegarde</a> avant toute opération importante.</li>
+          </ul>
+
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p><strong>SlowMail</strong> est un logiciel libre sous licence AGPL-3.0-or-later.</p>
+        <p>Fourni tel quel, sans garantie.</p>
+      </div>
+      <ul>
+        <li><a href="https://github.com/__REPO__">Code source</a></li>
+        <li><a href="https://github.com/__REPO__/blob/main/LICENSE">Licence</a></li>
+        <li><a href="https://github.com/__REPO__/issues">Signaler un problème</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="tutoriel.html">Tutoriel</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

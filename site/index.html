@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SlowMail : prospectez au compte-gouttes</title>
+  <meta name="description" content="SlowMail envoie quelques mails de prospection par jour, à des heures variables, depuis votre propre messagerie. Gratuit, libre (AGPL) et installé chez vous avec Docker.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m4 7.5 8 6.2 8-6.2"/></svg></span>
+        SlowMail
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="tutoriel.html">Installer</a>
+        <a href="premiers-envois.html">Premiers envois</a>
+        <a href="bon-usage.html">Bon usage</a>
+        <a href="depannage.html">Dépannage</a>
+        <a href="https://github.com/__REPO__">Code source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="hero">
+      <div class="wrap">
+        <h1>Prospectez <span class="nw">au compte-gouttes</span>, jamais en rafale.</h1>
+        <p class="lead">SlowMail envoie quelques mails par jour, à des heures variables, depuis votre propre messagerie, à partir d'un fichier CSV et d'un modèle de texte. Gratuit, libre, et installé chez vous.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="tutoriel.html">Installer SlowMail (20 min)</a>
+          <a class="btn" href="#fonctionnement">Voir comment ça marche</a>
+        </div>
+        <p class="small">Pour Mac, Windows et Linux, avec Docker. Un tutoriel pas à pas explique tout, même si vous n'avez jamais utilisé Docker.</p>
+
+        <figure class="shot">
+          <img src="assets/img/app-recipients.png" width="1200" height="940" alt="Écran d'une campagne SlowMail : la liste des destinataires avec leur statut (envoyé, planifié, rebond) et leur réponse." fetchpriority="high">
+          <figcaption>L'interface de SlowMail. Les adresses et les noms de cette capture sont fictifs.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Pensé pour ne rien envoyer de trop</h2>
+        <p class="intro">Un mail de prospection mal géré fait vite plus de mal que de bien. SlowMail applique des règles prudentes, et dans le doute, il ne fait rien.</p>
+        <div class="cards">
+          <div class="card">
+            <h3>Lent par conception</h3>
+            <p>4 mails par jour par défaut, à des heures tirées au hasard dans votre plage (9 h 30 à 17 h 30, jours ouvrés, hors jours fériés français), avec un écart minimum entre deux envois. Une montée progressive est possible.</p>
+          </div>
+          <div class="card">
+            <h3>Prudent dans le doute</h3>
+            <p>Une coupure en plein envoi, une erreur inconnue : SlowMail ne renvoie jamais tout seul. La ligne passe en « À vérifier » et c'est vous qui décidez. Après une veille de l'ordinateur, rien n'est rattrapé en rafale.</p>
+          </div>
+          <div class="card">
+            <h3>Des garde-fous</h3>
+            <p>Pas d'activation sans mention de désinscription dans votre texte. Une liste de suppression qui agit tout de suite. Trois échecs de suite mettent la campagne en pause. Un interrupteur général coupe tout.</p>
+          </div>
+          <div class="card">
+            <h3>Chez vous, rien d'autre</h3>
+            <p>Vos contacts restent sur votre ordinateur, dans une petite base SQLite. Pas de compte en ligne, pas de pixel de suivi, pas de statistiques d'ouverture. SlowMail ne parle qu'à votre serveur de messagerie.</p>
+          </div>
+          <div class="card">
+            <h3>Simple à relire</h3>
+            <p>Texte brut, variables comme <code>[PRENOM]</code>, aperçu pour chaque contact, mail de test, et un mode simulation pour répéter sans rien envoyer.</p>
+          </div>
+          <div class="card">
+            <h3>Libre et gratuit</h3>
+            <p>Licence AGPL-3.0. Vous pouvez l'utiliser, le lire, le modifier. Vous ne payez que votre messagerie.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fonctionnement">
+      <div class="wrap">
+        <h2>Comment ça marche</h2>
+        <p class="intro">Quatre gestes, dans le navigateur. Les captures montrent des données fictives.</p>
+        <div class="flow">
+          <div class="flow-item">
+            <div class="flow-text">
+              <span class="flow-num">1</span>
+              <h3>Importez votre liste</h3>
+              <p>Déposez un fichier CSV avec une colonne d'adresses (et, si vous voulez, prénom, structure, ville…). SlowMail vérifie tout avant d'ajouter quoi que ce soit : adresses invalides, doublons, personnes déjà contactées, adresses de votre liste de suppression.</p>
+            </div>
+            <figure class="shot">
+              <img src="assets/img/app-recipients.png" width="1200" height="940" loading="lazy" alt="La liste des destinataires d'une campagne, avec le bouton d'import de CSV et le filtre par statut.">
+            </figure>
+          </div>
+          <div class="flow-item">
+            <div class="flow-text">
+              <span class="flow-num">2</span>
+              <h3>Écrivez votre modèle</h3>
+              <p>Un objet et un texte brut avec des variables tirées de votre CSV. L'aperçu montre le mail exact que recevra chaque contact, et un bouton vous envoie un vrai mail de test.</p>
+            </div>
+            <figure class="shot">
+              <img src="assets/img/app-template.png" width="1200" height="1000" loading="lazy" alt="L'éditeur de modèle : l'objet, le corps avec des variables entre crochets, et l'aperçu pour un contact.">
+            </figure>
+          </div>
+          <div class="flow-item">
+            <div class="flow-text">
+              <span class="flow-num">3</span>
+              <h3>Réglez le rythme</h3>
+              <p>Nombre de mails par jour, plage horaire, jours autorisés, écart entre deux mails, délai avant de réécrire à la même organisation. Le récapitulatif en clair vous dit ce que SlowMail va faire et quand la campagne finira.</p>
+            </div>
+            <figure class="shot">
+              <img src="assets/img/app-settings.png" width="1200" height="1000" loading="lazy" alt="L'écran des réglages d'une campagne : quota quotidien, plage d'envoi, jours, écart minimum.">
+            </figure>
+          </div>
+          <div class="flow-item">
+            <div class="flow-text">
+              <span class="flow-num">4</span>
+              <h3>Suivez, répondez, décidez</h3>
+              <p>Le journal raconte chaque événement. Quand quelqu'un répond, vous le notez d'un clic (Répondu, Rendez-vous, Stop). Un « Stop » retire l'adresse de toutes vos campagnes, immédiatement.</p>
+            </div>
+            <figure class="shot">
+              <img src="assets/img/app-journal.png" width="1200" height="640" loading="lazy" alt="Le journal d'une campagne : import, activation, envois et un rebond, du plus récent au plus ancien.">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="two-col">
+          <div class="card">
+            <h3>Ce qu'il vous faut</h3>
+            <ul class="list-plain list-yes">
+              <li>Un ordinateur (Mac, Windows ou Linux), allumé aux heures d'envoi.</li>
+              <li>Docker, gratuit. Le tutoriel vous guide pour l'installer.</li>
+              <li>Une boîte mail avec accès SMTP (testé avec OVH ; les autres hébergeurs sont expliqués dans le tutoriel).</li>
+              <li>Une liste de contacts en CSV, et 20 minutes.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Ce que SlowMail n'est pas</h3>
+            <ul class="list-plain list-no">
+              <li>Un outil de mailing de masse ou de newsletter.</li>
+              <li>Un outil de suivi : aucune ouverture ni aucun clic n'est mesuré.</li>
+              <li>Un éditeur de mails HTML : c'est du texte brut.</li>
+              <li>Un service en ligne : chacun installe sa propre copie, pour lui seul.</li>
+              <li>Un lecteur de votre boîte : c'est vous qui notez les réponses.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="cta-band">
+          <h2>Prêt à essayer ?</h2>
+          <p>Le tutoriel part de zéro : installer Docker, démarrer SlowMail, puis faire un premier essai sur vos propres adresses avant de toucher à une vraie liste.</p>
+          <a class="btn btn-primary" href="tutoriel.html">Commencer le tutoriel</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap prose">
+        <h2>Questions fréquentes</h2>
+        <details>
+          <summary>C'est vraiment gratuit ?</summary>
+          <p>Oui. SlowMail est un logiciel libre (AGPL-3.0) : pas d'abonnement, pas de version payante. Vous payez seulement votre propre messagerie, si elle ne l'est pas déjà.</p>
+        </details>
+        <details>
+          <summary>Pourquoi n'y a-t-il pas de service en ligne ?</summary>
+          <p>Parce qu'un service partagé vous obligerait à confier vos listes de contacts et les identifiants de votre messagerie à un tiers. Ici, tout reste chez vous : SlowMail est conçu pour une seule personne, sur sa propre machine.</p>
+        </details>
+        <details>
+          <summary>Mes contacts sont-ils envoyés quelque part ?</summary>
+          <p>Non. Ils sont enregistrés dans une base SQLite, dans un espace Docker de votre ordinateur. SlowMail ne contacte que le serveur SMTP que vous lui indiquez, pour envoyer vos mails. Il n'y a ni télémétrie ni suivi.</p>
+        </details>
+        <details>
+          <summary>Mon ordinateur doit-il rester allumé ?</summary>
+          <p>Aux heures d'envoi, oui. S'il s'éteint ou se met en veille, rien ne part, et au réveil SlowMail ne rattrape rien en rafale : les créneaux manqués sont replanifiés dans votre plage horaire.</p>
+        </details>
+        <details>
+          <summary>Puis-je m'en servir pour mon activité professionnelle ?</summary>
+          <p>Oui, l'AGPL autorise l'usage professionnel. Si vous modifiez SlowMail et que vous proposez cette version à d'autres personnes par un réseau, la licence vous demande de leur donner aussi votre code modifié.</p>
+        </details>
+        <details>
+          <summary>Est-ce légal de prospecter par mail ?</summary>
+          <p>Cela dépend de qui vous écrivez et de comment vous les avez obtenus. La page <a href="bon-usage.html">Bon usage</a> rappelle les bases pour la France et l'Union européenne. SlowMail aide, mais la responsabilité de vos envois reste la vôtre.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p><strong>SlowMail</strong> est un logiciel libre sous licence AGPL-3.0-or-later.</p>
+        <p>Fourni tel quel, sans garantie.</p>
+      </div>
+      <ul>
+        <li><a href="https://github.com/__REPO__">Code source</a></li>
+        <li><a href="https://github.com/__REPO__/blob/main/LICENSE">Licence</a></li>
+        <li><a href="https://github.com/__REPO__/issues">Signaler un problème</a></li>
+        <li><a href="tutoriel.html">Tutoriel</a></li>
+        <li><a href="bon-usage.html">Bon usage</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

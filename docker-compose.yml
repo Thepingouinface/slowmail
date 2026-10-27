@@ -1,0 +1,43 @@
+name: slowmail
+
+# Deux services seulement : l'interface (app) et le planificateur (scheduler), tirés de la même image.
+# Pas de worker de file ni de Redis : slowmail:tick envoie directement.
+# La base SQLite vit dans un volume nommé partagé par les deux services.
+#
+# L'image sait aussi tout faire seule (SLOWMAIL_ROLE=all, le défaut) : voir « Image Docker autonome » dans le README.
+
+x-environment: &environment
+  # Le .env fournit le reste (SMTP, mot de passe, kill switch…). Cette valeur le prime.
+  DB_DATABASE: /data/database.sqlite
+
+services:
+  app:
+    build: .
+    image: slowmail:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      <<: *environment
+      SLOWMAIL_ROLE: web
+    ports:
+      # Écoute sur 127.0.0.1 par défaut : jamais exposé au réseau sans choix explicite.
+      - "${SLOWMAIL_BIND:-127.0.0.1}:${SLOWMAIL_PORT:-8080}:8000"
+    volumes:
+      - slowmail-data:/data
+    # La sonde de santé est celle de l'image : elle dépend du rôle (ici, l'interface répond sur /up).
+
+  scheduler:
+    image: slowmail:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      <<: *environment
+      SLOWMAIL_ROLE: scheduler
+    volumes:
+      - slowmail-data:/data
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  slowmail-data:

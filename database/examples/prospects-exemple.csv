@@ -1,0 +1,10 @@
+﻿EMAIL;PRENOM;NOM;STRUCTURE;VILLE;PRIORITE
+marie.durand@agence-lumiere.example;Marie;Durand;Agence Lumière;Lyon;2
+paul.martin@studio-nord.example;Paul;Martin;Studio Nord;Lille;1
+sophie.bernard@cabinet-bernard.example;Sophie;Bernard;;Nantes;
+Jean.Petit@mairie-exemple.example;Jean;Petit;Mairie d'Exemple;Rennes;3
+marie.durand@agence-lumiere.example;Marie;Durand;Agence Lumière;Lyon;2
+contact@@invalide;Luc;Invalide;Atelier Luc;Paris;
+;Anne;SansMail;Atelier Anne;Paris;
+élodie.garcia@maison-garcia.example;Élodie;Garcia;Maison Garcia;Bordeaux;4
+thomas.roux@agence-lumiere.example;Thomas;Roux;Agence Lumière;Lyon;5
