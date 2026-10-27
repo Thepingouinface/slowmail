@@ -26,6 +26,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark; /* barres de défilement, listes déroulantes et cases du navigateur en sombre */
     --bg: #131211;
     --surface: #1c1b1a;
     --text: #f5f5f4;
@@ -389,6 +390,86 @@ th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color
   background: var(--accent-soft);
   color: var(--accent);
 }
+
+/* ---------- Générateur du fichier de réglages ---------- */
+
+/* Sans JavaScript le formulaire ne sert à rien : on ne l'affiche pas (un message l'explique). */
+.gen-layout { display: none; }
+.js .gen-layout { display: grid; gap: 2rem; grid-template-columns: minmax(0, 1fr); padding-bottom: 3rem; }
+@media (min-width: 62rem) {
+  .js .gen-layout { grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); align-items: start; gap: 2.5rem; }
+  .gen-preview { position: sticky; top: 5.25rem; }
+}
+.gen [hidden] { display: none !important; }
+.gen .note { margin-top: 0; }
+
+.gen fieldset {
+  min-width: 0;
+  margin: 0 0 1.25rem;
+  padding: 0.25rem 1.25rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+}
+.gen legend { display: flex; gap: 0.7rem; align-items: center; padding: 0 0.4rem; font-weight: 700; font-size: 1.1rem; }
+.gen legend .n {
+  display: inline-grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.9rem;
+}
+.gen .hint { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+.gen .field { margin: 1.1rem 0 0; }
+.gen .field label { display: block; margin-bottom: 0.3rem; font-weight: 600; }
+.gen .opt { font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+
+.gen input[type="text"], .gen input[type="password"], .gen select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  border-radius: 0.5rem;
+}
+.gen input:focus-visible, .gen select:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.gen input[aria-invalid="true"] { border-color: var(--danger-text); box-shadow: 0 0 0 1px var(--danger-text); }
+.gen .input-row { display: flex; gap: 0.5rem; }
+.gen .input-row input { flex: 1; }
+.gen .btn-small { padding: 0.45rem 0.8rem; font-size: 0.9rem; flex: none; }
+.gen .link { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 0.18em; }
+
+.gen .field-error, .gen .field-warn { margin: 0.4rem 0 0; font-size: 0.9rem; line-height: 1.45; }
+.gen .field-error { color: var(--danger-text); font-weight: 600; }
+.gen .field-warn { color: var(--warn-text); }
+.gen .field-error::before { content: "Erreur : "; }
+.gen .field-warn::before { content: "À savoir : "; font-weight: 600; }
+
+.gen-advanced { margin: 0 0 1.25rem; }
+.gen-advanced[open] { padding-bottom: 1.25rem; }
+.gen .alert-summary {
+  margin: 0 0 1rem;
+  padding: 0.8rem 1.1rem;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-line);
+  border-radius: 0.7rem;
+  color: var(--danger-text);
+}
+.gen .alert-summary ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+.gen .alert-summary a { color: inherit; }
+.gen-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.gen-status { min-height: 1.5rem; margin: 0.75rem 0 0; color: var(--muted); font-size: 0.93rem; }
+
+.gen-preview h2 { margin: 0 0 0.25rem; font-size: 1.2rem; }
+.gen-preview .code { margin-top: 0.75rem; }
+.gen-preview .code pre { padding-right: 1.1rem; max-height: 75vh; overflow: auto; font-size: 0.8rem; }
+.gen-after { padding-bottom: 4rem; max-width: 46rem; }
+.gen-after h2 { font-size: 1.4rem; margin: 2rem 0 0.5rem; }
 
 /* ---------- Pied de page ---------- */
 

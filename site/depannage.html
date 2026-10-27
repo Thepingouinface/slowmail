@@ -74,7 +74,7 @@
           <details id="yaml">
             <summary>Une erreur « yaml: … » ou « mapping values are not allowed »</summary>
             <p>Le fichier <code>docker-compose.yml</code> a été abîmé en le modifiant. Les causes habituelles : un guillemet effacé, un décalage des espaces en début de ligne, des tabulations à la place d'espaces, ou un éditeur qui a enregistré en texte enrichi (TextEdit sur Mac : Format, puis « Convertir au format texte »).</p>
-            <p>Le plus sûr : <a href="telecharger/docker-compose.yml" download>retéléchargez le fichier</a> et remplissez-le de nouveau, en ne changeant que ce qui est entre les guillemets.</p>
+            <p>Le plus sûr : <a href="generateur.html">régénérez le fichier avec le générateur</a> (il écrit les guillemets et les caractères spéciaux à votre place), ou <a href="telecharger/docker-compose.yml" download>retéléchargez le fichier modèle</a> et remplissez-le de nouveau, en ne changeant que ce qui est entre les guillemets.</p>
           </details>
 
           <h2 id="demarrage">Démarrage</h2>
@@ -83,7 +83,7 @@
             <summary>« port is already allocated » ou « address already in use »</summary>
             <p>Un autre programme utilise déjà le port 8080 de votre ordinateur. Dans <code>docker-compose.yml</code>, changez le <strong>premier</strong> nombre de la ligne des ports :</p>
             <div class="code"><pre><code>      - "127.0.0.1:<span class="hl">8081</span>:8000"</code></pre></div>
-            <p>Puis <code>docker compose up -d</code>, et ouvrez <code>http://localhost:8081</code>. Gardez <code>127.0.0.1</code> et le <code>8000</code> final tels quels.</p>
+            <p>Puis <code>docker compose up -d</code>, et ouvrez <code>http://localhost:8081</code>. Gardez <code>127.0.0.1</code> et le <code>8000</code> final tels quels. (Le <a href="generateur.html">générateur</a> propose ce port dans ses réglages avancés.)</p>
           </details>
 
           <details id="pas-healthy">

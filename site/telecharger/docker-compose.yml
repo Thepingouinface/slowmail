@@ -1,7 +1,7 @@
 # SlowMail : un seul fichier à télécharger, une seule section à compléter.
 # Le tutoriel pas à pas : https://github.com/__REPO__ (et le site SlowMail).
 #
-# 1. Remplissez les valeurs de la section « À REMPLIR » (entre guillemets, sans changer l'alignement).
+# 1. Vérifiez ou complétez les valeurs de la section « À REMPLIR » (entre guillemets, sans changer l'alignement).
 # 2. Dans ce dossier :  docker compose up -d
 # 3. Ouvrez http://localhost:8080
 #

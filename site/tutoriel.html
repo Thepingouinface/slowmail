@@ -42,7 +42,7 @@
             <li><a href="#avant">Avant de commencer</a></li>
             <li><a href="#docker">1. Installer Docker</a></li>
             <li><a href="#dossier">2. Préparer le fichier</a></li>
-            <li><a href="#remplir">3. Le remplir</a></li>
+            <li><a href="#remplir">3. Le remplir à la main</a></li>
             <li><a href="#demarrer">4. Démarrer</a></li>
             <li><a href="#ouvrir">5. Ouvrir SlowMail</a></li>
             <li><a href="#quotidien">Au quotidien</a></li>
@@ -116,7 +116,44 @@ docker compose version</code></pre></div>
 
           <h2 id="dossier"><span class="step-title"><span class="n">2</span>Préparer le fichier</span></h2>
 
-          <p>Vous allez créer un dossier <code>slowmail</code> et y placer <strong>un seul fichier</strong>, <code>docker-compose.yml</code>. Il dit à Docker quoi lancer, et contient vos réglages.</p>
+          <p>SlowMail tient dans <strong>un seul fichier</strong>, <code>docker-compose.yml</code>, que vous rangerez dans un dossier <code>slowmail</code>. Il dit à Docker quoi lancer et contient vos réglages, mots de passe compris. Deux façons de l'obtenir :</p>
+
+          <div class="note">
+            <strong>Le plus simple : le générateur</strong>
+            <p>Un formulaire de ce site produit le fichier tout rempli. Ce que vous y tapez ne quitte pas votre navigateur, et il n'y a rien à modifier à la main : vous passez ensuite directement à l'étape 4.</p>
+            <p><a class="btn btn-primary" href="generateur.html">Ouvrir le générateur</a></p>
+          </div>
+
+          <h3 id="fichier-genere">Si vous avez utilisé le générateur : ranger le fichier</h3>
+
+          <p>Le fichier <code>docker-compose.yml</code> est dans le dossier de téléchargements de votre navigateur. Dans le terminal, créez le dossier <code>slowmail</code>, rangez-y le fichier et placez-vous dedans :</p>
+
+          <div class="os-block" data-os="mac">
+            <div class="code" data-copy><pre><code>mkdir -p ~/slowmail
+mv ~/Downloads/docker-compose.yml ~/slowmail/
+cd ~/slowmail
+ls</code></pre></div>
+          </div>
+          <div class="os-block" data-os="linux">
+            <div class="code" data-copy><pre><code>mkdir -p ~/slowmail
+mv "$(xdg-user-dir DOWNLOAD)/docker-compose.yml" ~/slowmail/
+cd ~/slowmail
+ls</code></pre></div>
+          </div>
+          <div class="os-block" data-os="windows">
+            <div class="code" data-copy><pre><code>mkdir $HOME\slowmail
+Move-Item $HOME\Downloads\docker-compose.yml $HOME\slowmail\
+cd $HOME\slowmail
+dir</code></pre></div>
+          </div>
+
+          <p>La dernière commande doit afficher <code>docker-compose.yml</code>. Si le déplacement échoue (votre navigateur a demandé où enregistrer, ou il a renommé le fichier en <code>docker-compose (1).yml</code>), glissez le fichier à la main dans le dossier <code>slowmail</code>, que vous ouvrez avec <code>open .</code> (Mac), <code>explorer .</code> (Windows) ou <code>xdg-open .</code> (Linux). Son nom doit être exactement <code>docker-compose.yml</code>.</p>
+
+          <p>Votre fichier est prêt : <strong>passez à l'<a href="#demarrer">étape 4</a></strong>.</p>
+
+          <h3 id="fichier-modele">Sinon : partir du fichier modèle et le remplir à la main</h3>
+
+          <p>Dans le terminal, créez le dossier et téléchargez le fichier modèle :</p>
 
           <div class="os-block" data-os="mac">
             <div class="code" data-copy><pre><code>mkdir -p ~/slowmail
@@ -136,9 +173,14 @@ Invoke-WebRequest -Uri __SITE_URL__/telecharger/docker-compose.yml -OutFile dock
 
           <p>Vous pouvez aussi <a href="telecharger/docker-compose.yml" download>télécharger le fichier avec votre navigateur</a> et le ranger dans un dossier <code>slowmail</code> que vous aurez créé. Vérifiez alors que son nom est exactement <code>docker-compose.yml</code>, sans <code>.txt</code> à la fin.</p>
 
-          <h2 id="remplir"><span class="step-title"><span class="n">3</span>Remplir le fichier</span></h2>
+          <h2 id="remplir"><span class="step-title"><span class="n">3</span>Remplir le fichier à la main</span></h2>
 
-          <p>Ouvrez le fichier avec un éditeur de texte.</p>
+          <div class="note">
+            <strong>Passez cette étape si vous avez utilisé le générateur</strong>
+            <p>Votre fichier est déjà rempli : rendez-vous à l'<a href="#demarrer">étape 4</a>.</p>
+          </div>
+
+          <p>Ouvrez le fichier modèle avec un éditeur de texte.</p>
           <div class="os-block" data-os="mac">
             <div class="code" data-copy><pre><code>open -e docker-compose.yml</code></pre></div>
             <p>Il s'ouvre dans TextEdit. S'il affiche une barre de mise en forme (gras, italique…), faites <strong>Format, puis « Convertir au format texte »</strong> avant d'enregistrer : du texte enrichi casserait le fichier.</p>
@@ -217,7 +259,7 @@ Invoke-WebRequest -Uri __SITE_URL__/telecharger/docker-compose.yml -OutFile dock
 
           <h2 id="ouvrir"><span class="step-title"><span class="n">5</span>Ouvrir SlowMail</span></h2>
 
-          <p>Dans votre navigateur, allez à l'adresse <a href="http://localhost:8080">http://localhost:8080</a>. Entrez le mot de passe que vous avez choisi à l'étape 3.</p>
+          <p>Dans votre navigateur, allez à l'adresse <a href="http://localhost:8080">http://localhost:8080</a>. Entrez le mot de passe que vous avez choisi pour SlowMail (dans le générateur, ou à l'étape 3).</p>
 
           <figure class="shot">
             <img src="assets/img/app-login.png" width="1200" height="620" loading="lazy" alt="La page de connexion de SlowMail : un champ de mot de passe et un bouton « Entrer ».">

@@ -112,13 +112,21 @@ SlowMail est proposé gratuitement à la communauté sous licence **AGPL-3.0-or-
 | Élément | Où | Rôle |
 |---|---|---|
 | Le site | `site/` (pages statiques, en français) | Présentation, tutoriel Docker pour débutants (`tutoriel.html`), premiers envois, bon usage, dépannage |
+| Le générateur | `site/generateur.html`, `site/assets/generateur.js` | Un formulaire qui produit ce fichier déjà rempli, **entièrement dans le navigateur** (la page interdit toute requête réseau par une balise `Content-Security-Policy`). Il part du fichier modèle ci-dessous, embarqué à la construction : une seule source |
 | Le fichier de l'utilisateur | `site/telecharger/docker-compose.yml` | **Un seul fichier** : l'image publique, un volume, le port sur `127.0.0.1`, les réglages à remplir (mot de passe, SMTP). Un seul service (`SLOWMAIL_ROLE=all`) |
 | L'image | `ghcr.io/<propriétaire>/<dépôt>` | Construite pour `linux/amd64` et `linux/arm64` par `.github/workflows/image.yml` à chaque étiquette `v*` |
 
-Le site contient des marqueurs que `scripts/build-site.sh` remplace dans `dist/` (les sources ne sont jamais modifiées) : `__REPO__` (propriétaire/dépôt), `__REPO_LC__` (en minuscules, nom de l'image), `__SITE_URL__` (adresse du site, celle de GitHub Pages par défaut). Le script échoue s'il en reste un.
+Le site contient des marqueurs que `scripts/build-site.sh` remplace dans `dist/` (les sources ne sont jamais modifiées) : `__REPO__` (propriétaire/dépôt), `__REPO_LC__` (en minuscules, nom de l'image), `__SITE_URL__` (adresse du site, celle de GitHub Pages par défaut). Le script échoue s'il en reste un. Un quatrième, `__COMPOSE_MODELE__`, est remplacé dans `generateur.html` par le contenu de `telecharger/docker-compose.yml`.
 
 ```bash
 scripts/build-site.sh propriétaire/dépôt          # écrit dist/ ; aperçu : python3 -m http.server -d dist 8099
+```
+
+Le générateur est vérifié contre le vrai Docker Compose : chaque fichier produit (guillemets, antislash, `#`, `$`, accents…) doit être relu par Compose avec exactement les valeurs saisies.
+
+```bash
+node scripts/check-generateur.mjs --container --dist   # Docker (OrbStack ou Docker Desktop) lancé, image publique tirée, dist/ construit
+node scripts/check-generateur.mjs --no-docker          # saisie et modèle seulement (Compose n'est alors PAS vérifié)
 ```
 
 **Première publication** (à faire une fois, dans cet ordre) :
